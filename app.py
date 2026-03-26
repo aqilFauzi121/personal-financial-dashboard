@@ -2,17 +2,18 @@ import streamlit as st
 import pandas as pd
 from utils.auth import check_password
 from utils.db import fetch_transactions, fetch_envelopes, fetch_pending_incomes
+from utils.calculations import calculate_runway
 
 # ==========================================
-# KONFIGURASI HALAMAN (Mobile-First UI)
+# KONFIGURASI HALAMAN
 # ==========================================
 st.set_page_config(
     page_title="Arsitek Finansial Pribadi",
-    layout="centered",
-    initial_sidebar_state="collapsed"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Injeksi CSS Custom untuk Tampilan Clean SaaS
+# Injeksi CSS Custom
 st.markdown("""
     <style>
     /* Sembunyikan Header Deploy dan Hamburger Menu */
@@ -21,27 +22,22 @@ st.markdown("""
     footer {visibility: hidden;}
     /* Kurangi Padding Atas */
     .block-container {
-        padding-top: 2rem;
+        padding-top: 1rem;
         padding-bottom: 2rem;
-    }
-    /* Kustomisasi font untuk judul utama */
-    h1 {
-        font-weight: 700;
-        letter-spacing: -0.025em;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 1. PIN GATE (Sistem Login)
+# 1. PIN GATE
 # ==========================================
 if not check_password():
-    st.stop()  # Hentikan eksekusi script jika PIN belum dimasukkan/salah
+    st.stop()
 
 # ==========================================
 # IMPORT KOMPONEN MODULAR
 # ==========================================
-from components.quick_add import render_quick_add
+from components.quick_add import render_quick_add_sidebar
 from components.runway_health import render_runway_health
 from components.pending_income import render_pending_incomes
 from components.virtual_envelopes import render_virtual_envelopes
@@ -59,52 +55,54 @@ except Exception as e:
     st.stop()
 
 # ==========================================
-# HEADER HALAMAN
+# SIDEBAR: QUICK ADD FORM
 # ==========================================
-st.title("Arsitek Finansial Pribadi")
-st.markdown("Dasbor manajemen arus kas khusus freelancer.")
+render_quick_add_sidebar()
+
+# ==========================================
+# HERO BANNER
+# ==========================================
+st.markdown(
+    '<div style="background:linear-gradient(135deg, #0D9488 0%, #065F46 100%); '
+    'padding:28px 32px; border-radius:12px; margin-bottom:24px;">'
+    '<h1 style="color:#FFFFFF; margin:0; font-size:1.75rem; font-weight:700; letter-spacing:-0.025em;">'
+    'Arsitek Finansial Pribadi</h1>'
+    '<p style="color:#CCFBF1; margin:6px 0 0 0; font-size:0.95rem;">'
+    'Dasbor manajemen arus kas khusus freelancer &mdash; pantau runway, kelola amplop, dan cairkan piutang dalam satu layar.</p>'
+    '</div>',
+    unsafe_allow_html=True
+)
+
+# ==========================================
+# HERO SECTION: RUNWAY HEALTH (Full Width)
+# ==========================================
+render_runway_health(transactions)
+
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
-# BAGIAN 1: QUICK ADD FORM
+# TWO-COLUMN LAYOUT: ENVELOPES + PENDING
 # ==========================================
-render_quick_add()
+col_left, col_right = st.columns(2, gap="large")
 
-st.markdown("<br>", unsafe_allow_html=True)
-
-# ==========================================
-# BAGIAN 2: RUNWAY HEALTH & ENVELOPES 
-# (Menggunakan Tabs agar hemat ruang layar HP)
-# ==========================================
-tab1, tab2 = st.tabs(["Runway Health", "Virtual Envelopes"])
-
-with tab1:
-    render_runway_health(transactions)
-
-with tab2:
-    from utils.calculations import calculate_runway
+with col_left:
     current_balance, _, _ = calculate_runway(transactions)
     render_virtual_envelopes(current_balance, envelopes)
 
-st.markdown("<br>", unsafe_allow_html=True)
-
-# ==========================================
-# BAGIAN 3: PENDING INCOME TRACKER
-# ==========================================
-render_pending_incomes(pending_incomes)
+with col_right:
+    render_pending_incomes(pending_incomes)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
-# BAGIAN 4: PURCHASE SIMULATOR 
+# PURCHASE SIMULATOR (Full Width)
 # ==========================================
 render_purchase_simulator(transactions, envelopes)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
-# BAGIAN 5: TABEL RIWAYAT TRANSAKSI 
-# (Diubah menjadi style border component)
+# RIWAYAT TRANSAKSI
 # ==========================================
 with st.container(border=True):
     st.markdown("**Riwayat Transaksi (5 Terakhir)**")
@@ -116,6 +114,6 @@ with st.container(border=True):
             df_display.columns = ['Tanggal', 'Jenis', 'Nominal (Rp)', 'Kategori', 'Catatan']
             st.dataframe(df_display, use_container_width=True, hide_index=True)
         except KeyError:
-            st.dataframe(df_display, use_container_width=True) # Fallback jika kolom tidak sama
+            st.dataframe(df_display, use_container_width=True)
     else:
         st.info("Belum ada transaksi tercatat.")

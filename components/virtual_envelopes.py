@@ -1,13 +1,13 @@
 import streamlit as st
 
-# Palet warna berbeda untuk setiap amplop agar tampilan lebih kaya visual
+# Palet warna untuk setiap amplop — diselaraskan dengan tema Teal
 ENVELOPE_COLORS = [
-    {"bg": "#EEF2FF", "bar": "#6366F1", "text": "#3730A3"},  # Indigo
-    {"bg": "#ECFDF5", "bar": "#10B981", "text": "#065F46"},  # Emerald
-    {"bg": "#FFF7ED", "bar": "#F97316", "text": "#9A3412"},  # Orange
-    {"bg": "#FDF2F8", "bar": "#EC4899", "text": "#9D174D"},  # Pink
-    {"bg": "#F0F9FF", "bar": "#0EA5E9", "text": "#0C4A6E"},  # Sky
-    {"bg": "#FEFCE8", "bar": "#EAB308", "text": "#854D0E"},  # Yellow
+    {"bg": "#F0FDFA", "bar": "#0D9488", "text": "#134E4A"},  # Teal (Primary)
+    {"bg": "#ECFDF5", "bar": "#059669", "text": "#064E3B"},  # Emerald
+    {"bg": "#EFF6FF", "bar": "#3B82F6", "text": "#1E3A5F"},  # Blue
+    {"bg": "#FFF7ED", "bar": "#EA580C", "text": "#9A3412"},  # Orange
+    {"bg": "#FAF5FF", "bar": "#9333EA", "text": "#581C87"},  # Purple
+    {"bg": "#FDF2F8", "bar": "#DB2777", "text": "#9D174D"},  # Pink
 ]
 
 def render_virtual_envelopes(current_balance, envelopes_data):
@@ -21,7 +21,7 @@ def render_virtual_envelopes(current_balance, envelopes_data):
         st.info("Belum ada konfigurasi persentase amplop di tabel envelopes Supabase.")
         return
         
-    st.caption("Visualisasi ini membantu memecah sisa Runway Balance (Rp {0:,.0f}) ke pos-pos penting agar tidak terpakai sembarangan.".format(current_balance))
+    st.caption("Alokasi sisa Runway Balance (Rp {0:,.0f}) ke pos-pos penting.".format(current_balance))
     
     for idx, env in enumerate(envelopes_data):
         per = float(env['allocation_percentage'])
@@ -35,7 +35,7 @@ def render_virtual_envelopes(current_balance, envelopes_data):
             f'<span style="color:{color["text"]}; font-weight:600;">{env["name"]}</span>'
             f'<span style="color:{color["text"]}; font-weight:700; font-size:1.1rem;">Rp {allocated_amount:,.0f}</span>'
             f'</div>'
-            f'<div style="background:#E5E7EB; border-radius:4px; height:8px; margin-top:8px; overflow:hidden;">'
+            f'<div style="background:#E2E8F0; border-radius:4px; height:8px; margin-top:8px; overflow:hidden;">'
             f'<div style="background:{color["bar"]}; width:{int(per)}%; height:100%; border-radius:4px;"></div>'
             f'</div>'
             f'<span style="color:{color["text"]}; font-size:0.75rem;">Alokasi {per}%</span>'
