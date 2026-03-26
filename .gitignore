@@ -1,0 +1,64 @@
+# 1. Kredensial Streamlit & Rahasia
+.streamlit/
+secrets.toml
+
+# 2. Variabel Lingkungan (Environment Variables)
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.test
+
+# 3. Virtual Environment Python
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# 4. File Cache & Log Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.log
+
+# 5. Data Lokal (Aman dari kebocoran data pengguna/sampel)
+*.csv
+*.json
+*.sqlite3
+*.db
+*.dat
+
+# 6. File Sistem Operasi
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 7. File Distribusi & Build Python (Opsional)
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
