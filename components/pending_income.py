@@ -15,7 +15,7 @@ def render_pending_incomes(pending_data):
             with col2:
                 due_date = st.date_input("Tenggat Waktu", datetime.date.today() + datetime.timedelta(days=14))
             
-            submitted_invoice = st.form_submit_button("Tambah Tagihan", use_container_width=True)
+            submitted_invoice = st.form_submit_button("Tambah Tagihan", use_container_width=True, type="primary")
             if submitted_invoice:
                 if client and amount > 0:
                     insert_pending_income(client, amount, due_date)

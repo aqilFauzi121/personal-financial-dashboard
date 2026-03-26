@@ -32,7 +32,7 @@ def render_quick_add():
                     
             notes_input = st.text_input("Catatan (Opsional)")
             
-            submitted = st.form_submit_button("Simpan Transaksi", use_container_width=True)
+            submitted = st.form_submit_button("Simpan Transaksi", use_container_width=True, type="primary")
             
             if submitted:
                 if amount_input > 0:
