@@ -17,7 +17,7 @@ def check_password():
     if st.session_state["password_correct"]:
         return True
 
-    st.title("🔒 Arsitek Finansial Pribadi")
+    st.title("Arsitek Finansial Pribadi")
     st.markdown("Silakan masukkan PIN Anda untuk mengakses dasbor keuangan.")
     
     st.text_input(
@@ -26,6 +26,6 @@ def check_password():
     
     if "password" in st.session_state and not st.session_state["password_correct"]:
         if st.session_state["password"] != "":  # Hindari pesan error sebelum diisi
-            st.error("😕 PIN salah. Silakan coba lagi.")
+            st.error("PIN salah. Silakan coba lagi.")
     
     return False

@@ -3,7 +3,7 @@ import datetime
 from utils.db import insert_transaction, fetch_envelopes
 
 def render_quick_add():
-    st.subheader("⚡ Quick Add Transaction")
+    st.subheader("Quick Add Transaction")
     
     # Ambil data envelopes untuk dropdown kategori (Opsional)
     try:
@@ -15,7 +15,8 @@ def render_quick_add():
     categories_pemasukan = ['Gaji/Proyek', 'Bonus', 'Pencairan Faktur', 'Lainnya']
     categories_pengeluaran = categories if categories else ['Dana Darurat', 'Operasional', 'Self-Reward', 'Pajak & Biaya Admin', 'Lainnya']
     
-    with st.expander("➕ Tambah Pemasukan / Pengeluaran", expanded=True):
+    with st.container(border=True):
+        st.markdown("**Tambah Pemasukan / Pengeluaran**")
         with st.form("quick_add_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
             with col1:
@@ -36,7 +37,7 @@ def render_quick_add():
             if submitted:
                 if amount_input > 0:
                     insert_transaction(date_input, type_input, amount_input, category_input, notes_input)
-                    st.success("✅ Transaksi berhasil disimpan!")
+                    st.success("Transaksi berhasil disimpan.")
                     st.rerun()
                 else:
-                    st.error("Nominal harus lebih dari 0!")
+                    st.error("Nominal harus lebih dari 0.")

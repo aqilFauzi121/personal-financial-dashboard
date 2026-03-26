@@ -3,9 +3,10 @@ import datetime
 from utils.db import insert_pending_income, mark_income_as_paid
 
 def render_pending_incomes(pending_data):
-    st.subheader("⏳ Pending Income Tracker")
+    st.subheader("Pending Income Tracker")
     
-    with st.expander("➕ Tambah Faktur / Piutang Baru"):
+    with st.container(border=True):
+        st.markdown("**Tambah Faktur / Piutang Baru**")
         with st.form("new_invoice_form", clear_on_submit=True):
             col1, col2 = st.columns(2)
             with col1:
@@ -18,19 +19,19 @@ def render_pending_incomes(pending_data):
             if submitted_invoice:
                 if client and amount > 0:
                     insert_pending_income(client, amount, due_date)
-                    st.success("Faktur berhasil ditambahkan!")
+                    st.success("Faktur berhasil ditambahkan.")
                     st.rerun()
                 else:
-                    st.error("Mohon isi Nama Klien dan Nominal dengan benar.")
+                    st.error("Mohon lengkapi Nama Klien dan Nominal.")
 
     # List faktur yang statusnya 'Pending'
     pending_items = [item for item in pending_data if item['status'] == 'Pending']
     
     if not pending_items:
-        st.info("Tidak ada piutang yang tertunda saat ini. Anda telah dibayar semua!")
+        st.info("Tidak ada piutang yang tertunda saat ini. Anda telah dibayar semua.")
         return
 
-    st.markdown("##### Daftar Menunggu Pembayaran:")
+    st.markdown("**Daftar Menunggu Pembayaran:**")
     
     for item in pending_items:
         with st.container(border=True):
@@ -40,7 +41,7 @@ def render_pending_incomes(pending_data):
             
             # Tombol pencairan (logic pop-over persentase pajak)
             cair_key = f"cair_btn_{item['id']}"
-            if st.button("Tandai Cair ✅", key=cair_key, use_container_width=True):
+            if st.button("Tandai Cair", key=cair_key, use_container_width=True):
                 st.session_state[f"show_tax_{item['id']}"] = True
 
             # Jika state show_tax diaktifkan, munculkan pengaturan potongan
@@ -59,7 +60,7 @@ def render_pending_incomes(pending_data):
                             due_date=datetime.date.today(), # Set tanggal cair hari ini
                             tax_percentage=tax_pct
                         )
-                        st.success(f"Faktur {item['client_name']} berhasil dicairkan!")
+                        st.success(f"Faktur {item['client_name']} berhasil dicairkan.")
                         st.session_state[f"show_tax_{item['id']}"] = False
                         st.rerun()
                 with col_c2:
