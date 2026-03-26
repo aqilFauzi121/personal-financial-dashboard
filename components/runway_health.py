@@ -22,18 +22,18 @@ def render_runway_health(transactions_data):
         
     if current_balance <= 0 and len(transactions_data) > 0:
         st.markdown(
-            f'<div style="background:#FEE2E2; border-left:4px solid #EF4444; padding:12px 16px; border-radius:6px; margin-top:8px;">'
-            f'<span style="color:#991B1B; font-weight:600;">KRITIS</span>'
-            f'<br><span style="color:#7F1D1D; font-size:1.4rem; font-weight:700;">Saldo Minus</span>'
-            f'<br><span style="color:#991B1B;">Saldo utama Anda saat ini kosong atau minus.</span></div>',
+            f'<div style="background:#FEF2F2; border:2px solid #FCA5A5; border-left:5px solid #DC2626; padding:16px 20px; border-radius:8px; margin-top:8px;">'
+            f'<span style="color:#DC2626; font-weight:700; font-size:1.1rem; text-transform:uppercase; letter-spacing:0.05em;">⚠️ KRITIS</span>'
+            f'<br><span style="color:#7F1D1D; font-size:2rem; font-weight:800;">Saldo Minus</span>'
+            f'<br><span style="color:#991B1B; font-size:0.95rem;">Saldo utama Anda saat ini kosong atau minus.</span></div>',
             unsafe_allow_html=True
         )
     elif runway_days < 15:
         st.markdown(
-            f'<div style="background:#FEE2E2; border-left:4px solid #EF4444; padding:12px 16px; border-radius:6px; margin-top:8px;">'
-            f'<span style="color:#991B1B; font-weight:600;">KRITIS</span>'
-            f'<br><span style="color:#7F1D1D; font-size:1.4rem; font-weight:700;">{days_display}</span>'
-            f'<br><span style="color:#991B1B;">Dana Anda sangat menipis. Segera cairkan piutang atau kurangi pengeluaran.</span></div>',
+            f'<div style="background:#FEF2F2; border:2px solid #FCA5A5; border-left:5px solid #DC2626; padding:16px 20px; border-radius:8px; margin-top:8px;">'
+            f'<span style="color:#DC2626; font-weight:700; font-size:1.1rem; text-transform:uppercase; letter-spacing:0.05em;">⚠️ KRITIS</span>'
+            f'<br><span style="color:#7F1D1D; font-size:2rem; font-weight:800;">{days_display}</span>'
+            f'<br><span style="color:#991B1B; font-size:0.95rem;">Dana Anda sangat menipis. Segera cairkan piutang atau kurangi pengeluaran.</span></div>',
             unsafe_allow_html=True
         )
     elif runway_days <= 30:

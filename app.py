@@ -28,6 +28,20 @@ st.markdown("""
         padding-top: 1rem;
         padding-bottom: 2rem;
     }
+    /* Typography: Angka finansial lebih besar & bold */
+    [data-testid="stMetricValue"] {
+        font-size: 1.8rem !important;
+        font-weight: 800 !important;
+        letter-spacing: -0.02em !important;
+    }
+    /* Typography: Label metric lebih distinct */
+    [data-testid="stMetricLabel"] {
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.04em !important;
+        color: #64748B !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -120,4 +134,11 @@ with st.container(border=True):
         except KeyError:
             st.dataframe(df_display, use_container_width=True)
     else:
-        st.info("Belum ada transaksi tercatat.")
+        st.markdown(
+            '<div style="background:#EFF6FF; border-left:4px solid #3B82F6; padding:16px 20px; border-radius:8px;">'
+            '<span style="font-size:1.3rem;">📭</span> '
+            '<span style="color:#1E40AF; font-weight:600;">Belum ada transaksi.</span><br>'
+            '<span style="color:#1E3A5F; font-size:0.9rem;">Yuk catat pengeluaran pertamamu lewat sidebar!</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )

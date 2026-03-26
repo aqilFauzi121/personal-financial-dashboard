@@ -28,7 +28,14 @@ def render_pending_incomes(pending_data):
     pending_items = [item for item in pending_data if item['status'] == 'Pending']
     
     if not pending_items:
-        st.info("Tidak ada piutang yang tertunda saat ini. Anda telah dibayar semua.")
+        st.markdown(
+            '<div style="background:#ECFDF5; border-left:4px solid #10B981; padding:16px 20px; border-radius:8px;">'
+            '<span style="font-size:1.3rem;">🎉</span> '
+            '<span style="color:#065F46; font-weight:600;">Semua piutang sudah cair!</span><br>'
+            '<span style="color:#064E3B; font-size:0.9rem;">Tidak ada tagihan tertunda. Kerja bagus!</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
         return
 
     st.markdown("**Daftar Menunggu Pembayaran:**")

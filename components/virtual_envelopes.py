@@ -14,11 +14,25 @@ def render_virtual_envelopes(current_balance, envelopes_data):
     st.subheader("Virtual Envelopes")
     
     if current_balance <= 0:
-        st.info("Saldo utama sedang kosong atau minus. Tidak dapat mengalokasikan dana ke amplop.")
+        st.markdown(
+            '<div style="background:#FFF7ED; border-left:4px solid #F59E0B; padding:16px 20px; border-radius:8px;">'
+            '<span style="font-size:1.3rem;">💰</span> '
+            '<span style="color:#92400E; font-weight:600;">Saldo masih kosong.</span><br>'
+            '<span style="color:#78350F; font-size:0.9rem;">Tambahkan pemasukan dulu ya agar alokasi amplop bisa aktif!</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
         return
         
     if not envelopes_data:
-        st.info("Belum ada konfigurasi persentase amplop di tabel envelopes Supabase.")
+        st.markdown(
+            '<div style="background:#EFF6FF; border-left:4px solid #3B82F6; padding:16px 20px; border-radius:8px;">'
+            '<span style="font-size:1.3rem;">📁</span> '
+            '<span style="color:#1E40AF; font-weight:600;">Belum ada amplop terkonfigurasi.</span><br>'
+            '<span style="color:#1E3A5F; font-size:0.9rem;">Atur persentase alokasi di tabel envelopes Supabase untuk mulai.</span>'
+            '</div>',
+            unsafe_allow_html=True
+        )
         return
         
     st.caption("Alokasi sisa Runway Balance (Rp {0:,.0f}) ke pos-pos penting.".format(current_balance))
