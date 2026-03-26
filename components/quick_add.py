@@ -33,7 +33,7 @@ def render_quick_add_sidebar():
         if submitted:
             if amount_input > 0:
                 insert_transaction(date_input, type_input, amount_input, category_input, notes_input)
-                st.success("Transaksi berhasil disimpan.")
+                st.success("✅ Transaksi berhasil disimpan!")
                 st.rerun()
             else:
                 st.error("Nominal harus lebih dari 0.")

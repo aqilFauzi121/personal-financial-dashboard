@@ -19,7 +19,7 @@ def render_pending_incomes(pending_data):
             if submitted_invoice:
                 if client and amount > 0:
                     insert_pending_income(client, amount, due_date)
-                    st.success("Faktur berhasil ditambahkan.")
+                    st.success("✅ Tagihan berhasil ditambahkan!")
                     st.rerun()
                 else:
                     st.error("Mohon lengkapi Nama Klien dan Nominal.")
@@ -29,10 +29,10 @@ def render_pending_incomes(pending_data):
     
     if not pending_items:
         st.markdown(
-            '<div style="background:#ECFDF5; border-left:4px solid #10B981; padding:16px 20px; border-radius:8px;">'
-            '<span style="font-size:1.3rem;">🎉</span> '
-            '<span style="color:#065F46; font-weight:600;">Semua piutang sudah cair!</span><br>'
-            '<span style="color:#064E3B; font-size:0.9rem;">Tidak ada tagihan tertunda. Kerja bagus!</span>'
+            '<div style="background:#f0fdf4; border-left:4px solid #2d6a4f; padding:24px; border-radius:8px; text-align:center;">'
+            '<div style="font-size:2rem; margin-bottom:8px;">🎉</div>'
+            '<div style="color:#1a1a2e; font-weight:700; font-size:16px; margin-bottom:4px;">Semua piutang sudah cair!</div>'
+            '<div style="color:#6b7280; font-size:14px;">Tidak ada tagihan tertunda. Kerja bagus!</div>'
             '</div>',
             unsafe_allow_html=True
         )
@@ -67,7 +67,7 @@ def render_pending_incomes(pending_data):
                             due_date=datetime.date.today(), # Set tanggal cair hari ini
                             tax_percentage=tax_pct
                         )
-                        st.success(f"Faktur {item['client_name']} berhasil dicairkan.")
+                        st.success(f"✅ Faktur {item['client_name']} berhasil dicairkan!")
                         st.session_state[f"show_tax_{item['id']}"] = False
                         st.rerun()
                 with col_c2:

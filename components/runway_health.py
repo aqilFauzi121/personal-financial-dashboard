@@ -22,33 +22,33 @@ def render_runway_health(transactions_data):
         
     if current_balance <= 0 and len(transactions_data) > 0:
         st.markdown(
-            f'<div style="background:#FEF2F2; border:2px solid #FCA5A5; border-left:5px solid #DC2626; padding:16px 20px; border-radius:8px; margin-top:8px;">'
-            f'<span style="color:#DC2626; font-weight:700; font-size:1.1rem; text-transform:uppercase; letter-spacing:0.05em;">⚠️ KRITIS</span>'
-            f'<br><span style="color:#7F1D1D; font-size:2rem; font-weight:800;">Saldo Minus</span>'
-            f'<br><span style="color:#991B1B; font-size:0.95rem;">Saldo utama Anda saat ini kosong atau minus.</span></div>',
+            f'<div style="background:#fef2f2; border-left:4px solid #dc2626; padding:16px 20px; border-radius:8px; margin-top:8px;">'
+            f'<span style="color:#dc2626; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">⚠️ KRITIS</span>'
+            f'<br><span style="color:#1a1a2e; font-size:32px; font-weight:800;">Saldo Minus</span>'
+            f'<br><span style="color:#6b7280; font-size:14px;">Saldo utama Anda saat ini kosong atau minus.</span></div>',
             unsafe_allow_html=True
         )
     elif runway_days < 15:
         st.markdown(
-            f'<div style="background:#FEF2F2; border:2px solid #FCA5A5; border-left:5px solid #DC2626; padding:16px 20px; border-radius:8px; margin-top:8px;">'
-            f'<span style="color:#DC2626; font-weight:700; font-size:1.1rem; text-transform:uppercase; letter-spacing:0.05em;">⚠️ KRITIS</span>'
-            f'<br><span style="color:#7F1D1D; font-size:2rem; font-weight:800;">{days_display}</span>'
-            f'<br><span style="color:#991B1B; font-size:0.95rem;">Dana Anda sangat menipis. Segera cairkan piutang atau kurangi pengeluaran.</span></div>',
+            f'<div style="background:#fef2f2; border-left:4px solid #dc2626; padding:16px 20px; border-radius:8px; margin-top:8px;">'
+            f'<span style="color:#dc2626; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">⚠️ KRITIS</span>'
+            f'<br><span style="color:#1a1a2e; font-size:32px; font-weight:800;">{days_display}</span>'
+            f'<br><span style="color:#6b7280; font-size:14px;">Dana Anda sangat menipis. Segera cairkan piutang atau kurangi pengeluaran.</span></div>',
             unsafe_allow_html=True
         )
     elif runway_days <= 30:
         st.markdown(
-            f'<div style="background:#FEF9C3; border-left:4px solid #EAB308; padding:12px 16px; border-radius:6px; margin-top:8px;">'
-            f'<span style="color:#854D0E; font-weight:600;">HATI-HATI</span>'
-            f'<br><span style="color:#713F12; font-size:1.4rem; font-weight:700;">{days_display}</span>'
-            f'<br><span style="color:#854D0E;">Runway mulai menipis. Pertimbangkan untuk mengevaluasi pengeluaran Anda.</span></div>',
+            f'<div style="background:#fffbeb; border-left:4px solid #d97706; padding:16px 20px; border-radius:8px; margin-top:8px;">'
+            f'<span style="color:#d97706; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">⚠️ HATI-HATI</span>'
+            f'<br><span style="color:#1a1a2e; font-size:32px; font-weight:800;">{days_display}</span>'
+            f'<br><span style="color:#6b7280; font-size:14px;">Runway mulai menipis. Pertimbangkan untuk mengevaluasi pengeluaran Anda.</span></div>',
             unsafe_allow_html=True
         )
     else:
         st.markdown(
-            f'<div style="background:#D1FAE5; border-left:4px solid #10B981; padding:12px 16px; border-radius:6px; margin-top:8px;">'
-            f'<span style="color:#065F46; font-weight:600;">AMAN</span>'
-            f'<br><span style="color:#064E3B; font-size:1.4rem; font-weight:700;">{days_display}</span>'
-            f'<br><span style="color:#065F46;">Keuangan Anda dalam kondisi sehat.</span></div>',
+            f'<div style="background:#f0fdf4; border-left:4px solid #2d6a4f; padding:16px 20px; border-radius:8px; margin-top:8px;">'
+            f'<span style="color:#2d6a4f; font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">✅ AMAN</span>'
+            f'<br><span style="color:#1a1a2e; font-size:32px; font-weight:800;">{days_display}</span>'
+            f'<br><span style="color:#6b7280; font-size:14px;">Keuangan Anda dalam kondisi sehat.</span></div>',
             unsafe_allow_html=True
         )

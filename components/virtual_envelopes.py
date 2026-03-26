@@ -1,8 +1,8 @@
 import streamlit as st
 
-# Palet warna untuk setiap amplop — diselaraskan dengan tema Teal
+# Palet warna untuk setiap amplop — diselaraskan dengan tema brand hijau
 ENVELOPE_COLORS = [
-    {"bg": "#F0FDFA", "bar": "#0D9488", "text": "#134E4A"},  # Teal (Primary)
+    {"bg": "#f0fdf4", "bar": "#2d6a4f", "text": "#1a1a2e"},  # Green (Primary)
     {"bg": "#ECFDF5", "bar": "#059669", "text": "#064E3B"},  # Emerald
     {"bg": "#EFF6FF", "bar": "#3B82F6", "text": "#1E3A5F"},  # Blue
     {"bg": "#FFF7ED", "bar": "#EA580C", "text": "#9A3412"},  # Orange
@@ -15,10 +15,10 @@ def render_virtual_envelopes(current_balance, envelopes_data):
     
     if current_balance <= 0:
         st.markdown(
-            '<div style="background:#FFF7ED; border-left:4px solid #F59E0B; padding:16px 20px; border-radius:8px;">'
-            '<span style="font-size:1.3rem;">💰</span> '
-            '<span style="color:#92400E; font-weight:600;">Saldo masih kosong.</span><br>'
-            '<span style="color:#78350F; font-size:0.9rem;">Tambahkan pemasukan dulu ya agar alokasi amplop bisa aktif!</span>'
+            '<div style="background:#fffbeb; border-left:4px solid #d97706; padding:24px; border-radius:8px; text-align:center;">'
+            '<div style="font-size:2rem; margin-bottom:8px;">💰</div>'
+            '<div style="color:#1a1a2e; font-weight:700; font-size:16px; margin-bottom:4px;">Saldo masih kosong.</div>'
+            '<div style="color:#6b7280; font-size:14px;">Tambahkan pemasukan dulu ya agar alokasi amplop bisa aktif!</div>'
             '</div>',
             unsafe_allow_html=True
         )
@@ -26,10 +26,10 @@ def render_virtual_envelopes(current_balance, envelopes_data):
         
     if not envelopes_data:
         st.markdown(
-            '<div style="background:#EFF6FF; border-left:4px solid #3B82F6; padding:16px 20px; border-radius:8px;">'
-            '<span style="font-size:1.3rem;">📁</span> '
-            '<span style="color:#1E40AF; font-weight:600;">Belum ada amplop terkonfigurasi.</span><br>'
-            '<span style="color:#1E3A5F; font-size:0.9rem;">Atur persentase alokasi di tabel envelopes Supabase untuk mulai.</span>'
+            '<div style="background:#f0f9ff; border-left:4px solid #0284c7; padding:24px; border-radius:8px; text-align:center;">'
+            '<div style="font-size:2rem; margin-bottom:8px;">📁</div>'
+            '<div style="color:#1a1a2e; font-weight:700; font-size:16px; margin-bottom:4px;">Belum ada amplop terkonfigurasi.</div>'
+            '<div style="color:#6b7280; font-size:14px;">Atur persentase alokasi di tabel envelopes Supabase untuk mulai.</div>'
             '</div>',
             unsafe_allow_html=True
         )
@@ -44,15 +44,15 @@ def render_virtual_envelopes(current_balance, envelopes_data):
         
         st.markdown(
             f'<div style="background:{color["bg"]}; border-left:4px solid {color["bar"]}; '
-            f'padding:12px 16px; border-radius:6px; margin-bottom:10px;">'
+            f'padding:16px 20px; border-radius:8px; margin-bottom:16px;">'
             f'<div style="display:flex; justify-content:space-between; align-items:center;">'
-            f'<span style="color:{color["text"]}; font-weight:600;">{env["name"]}</span>'
-            f'<span style="color:{color["text"]}; font-weight:700; font-size:1.1rem;">Rp {allocated_amount:,.0f}</span>'
+            f'<span style="color:{color["text"]}; font-weight:600; font-size:14px;">{env["name"]}</span>'
+            f'<span style="color:{color["text"]}; font-weight:800; font-size:18px;">Rp {allocated_amount:,.0f}</span>'
             f'</div>'
-            f'<div style="background:#E2E8F0; border-radius:4px; height:8px; margin-top:8px; overflow:hidden;">'
+            f'<div style="background:#e5e1d8; border-radius:4px; height:8px; margin-top:8px; overflow:hidden;">'
             f'<div style="background:{color["bar"]}; width:{int(per)}%; height:100%; border-radius:4px;"></div>'
             f'</div>'
-            f'<span style="color:{color["text"]}; font-size:0.75rem;">Alokasi {per}%</span>'
+            f'<span style="color:#6b7280; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">Alokasi {per}%</span>'
             f'</div>',
             unsafe_allow_html=True
         )
