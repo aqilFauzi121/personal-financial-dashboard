@@ -66,12 +66,12 @@ render_quick_add_sidebar()
 # HERO BANNER
 # ==========================================
 st.markdown(
-    '<div style="background:linear-gradient(135deg, #0F766E 0%, #0D9488 40%, #065F46 100%); '
-    'padding:32px 36px; border-radius:14px; margin-bottom:28px; '
-    'box-shadow:0 10px 25px -5px rgba(13,148,136,0.3), 0 4px 6px -2px rgba(0,0,0,0.08);">'
+    '<div style="background:linear-gradient(to right, #064e3b, #059669); '
+    'padding:32px 36px; border-radius:10px; margin-bottom:28px; '
+    'box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);">'
     '<h1 style="color:#FFFFFF; margin:0; font-size:1.8rem; font-weight:700; letter-spacing:-0.025em;">'
     'Arsitek Finansial Pribadi</h1>'
-    '<p style="color:#CCFBF1; margin:8px 0 0 0; font-size:0.95rem; line-height:1.5;">'
+    '<p style="color:#A7F3D0; margin:8px 0 0 0; font-size:0.95rem; line-height:1.5;">'
     'Dasbor manajemen arus kas khusus freelancer &mdash; pantau runway, kelola amplop, dan cairkan piutang dalam satu layar.</p>'
     '</div>',
     unsafe_allow_html=True
