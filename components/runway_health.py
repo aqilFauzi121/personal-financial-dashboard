@@ -3,23 +3,25 @@ from utils.calculations import calculate_runway
 
 def render_runway_health(transactions_data):
     st.subheader("Runway Health Calculator")
-    
-    current_balance, avg_daily_expense, runway_days = calculate_runway(transactions_data)
-    
+
+    try:
+        current_balance, avg_daily_expense, runway_days = calculate_runway(transactions_data)
+    except Exception as e:
+        st.error(f"❌ Gagal menghitung Runway Health. ({e})")
+        return
+
     with st.container(border=True):
         col1, col2 = st.columns(2)
-        
         with col1:
             st.metric("Saldo Aktif", f"Rp {current_balance:,.0f}")
         with col2:
             st.metric("Pengeluaran/Hari (Rata-rata)", f"Rp {avg_daily_expense:,.0f}")
-            
-    # Indikator Runway berwarna dinamis
+
     if runway_days >= 999:
         days_display = "Tak Terhingga"
     else:
         days_display = f"{runway_days:.0f} Hari"
-        
+
     if current_balance <= 0 and len(transactions_data) > 0:
         st.markdown(
             f'<div style="background:#fef2f2; border-left:4px solid #dc2626; padding:16px 20px; border-radius:8px; margin-top:8px;">'

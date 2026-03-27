@@ -62,3 +62,6 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# 8. VSCode Editor Settings (Personal)
+.vscode/

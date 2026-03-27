@@ -1,8 +1,11 @@
 import streamlit as st
 import pandas as pd
 from utils.auth import check_password
+from utils.monitor import init_sentry
 from utils.db import fetch_transactions, fetch_envelopes, fetch_pending_incomes
 from utils.calculations import calculate_runway
+
+init_sentry()
 
 # ==========================================
 # KONFIGURASI HALAMAN
@@ -236,15 +239,25 @@ from components.virtual_envelopes import render_virtual_envelopes
 from components.purchase_simulator import render_purchase_simulator
 
 # ==========================================
-# PULL DATA DARI SUPABASE
+# PULL DATA DARI SUPABASE (dengan session_state caching)
 # ==========================================
-try:
-    transactions = fetch_transactions()
-    envelopes = fetch_envelopes()
-    pending_incomes = fetch_pending_incomes()
-except Exception as e:
-    st.error(f"Gagal memuat data dari Supabase. Pastikan URL dan API Key benar. Error: {e}")
-    st.stop()
+def load_all_data():
+    """Fetch semua data dari Supabase dan simpan ke session_state."""
+    try:
+        st.session_state["transactions"]    = fetch_transactions()
+        st.session_state["envelopes"]       = fetch_envelopes()
+        st.session_state["pending_incomes"] = fetch_pending_incomes()
+    except Exception as e:
+        st.error(f"Gagal memuat data dari Supabase. Pastikan URL dan API Key benar. Error: {e}")
+        st.stop()
+
+# Hanya fetch jika session_state belum ada (pertama kali load)
+if "transactions" not in st.session_state:
+    load_all_data()
+
+transactions    = st.session_state["transactions"]
+envelopes       = st.session_state["envelopes"]
+pending_incomes = st.session_state["pending_incomes"]
 
 # ==========================================
 # SIDEBAR: QUICK ADD FORM
