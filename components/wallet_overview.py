@@ -177,14 +177,23 @@ def render_wallet_overview(transactions_data: list, wallets_data: list) -> None:
         with st.container(border=True):
             st.markdown("**Tambah Wallet Baru**")
             with st.form("add_wallet_form", clear_on_submit=True):
-                w_name    = st.text_input("Nama Wallet", placeholder="cth: Bank Mandiri")
-                w_type    = st.selectbox(
+                w_name     = st.text_input("Nama Wallet", placeholder="cth: Bank Mandiri")
+                w_type     = st.selectbox(
                     "Tipe",
                     options=["cash", "bank", "ewallet", "investment"],
                     format_func=lambda x: WALLET_TYPE_META[x]["label"],
                 )
-                w_balance = st.number_input(
-                    "Saldo Awal (Rp)", min_value=0.0, step=100000.0, format="%.0f"
+                w_currency = st.selectbox(
+                    "Currency",
+                    options=["IDR", "USD"],
+                    help="Pilih USD untuk wallet seperti PayPal yang menyimpan saldo dalam dolar.",
+                )
+                # Label saldo awal menyesuaikan currency
+                saldo_label = "Saldo Awal (USD)" if w_currency == "USD" else "Saldo Awal (Rp)"
+                saldo_step  = 0.01 if w_currency == "USD" else 100000.0
+                saldo_fmt   = "%.2f" if w_currency == "USD" else "%.0f"
+                w_balance   = st.number_input(
+                    saldo_label, min_value=0.0, step=saldo_step, format=saldo_fmt
                 )
                 submitted_add = st.form_submit_button(
                     "Tambah Wallet", use_container_width=True, type="primary"
@@ -197,9 +206,10 @@ def render_wallet_overview(transactions_data: list, wallets_data: list) -> None:
                                 type_=w_type,
                                 initial_balance=w_balance,
                                 is_investment=(w_type == "investment"),
+                                currency=w_currency,
                             )
                             refresh_data()
-                            st.success(f"✅ Wallet {w_name} berhasil ditambahkan!")
+                            st.success(f"✅ Wallet {w_name} ({w_currency}) berhasil ditambahkan!")
                             st.rerun()
                         except Exception as e:
                             st.error(f"❌ Gagal menambahkan wallet. ({e})")

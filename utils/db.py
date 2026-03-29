@@ -159,7 +159,7 @@ def fetch_wallets():
         logger.error(f"fetch_wallets gagal: {e}")
         raise
 
-def insert_wallet(name: str, type_: str, initial_balance: float, is_investment: bool):
+def insert_wallet(name: str, type_: str, initial_balance: float, is_investment: bool, currency: str = "IDR"):
     try:
         supabase = get_supabase()
         data = {
@@ -168,9 +168,10 @@ def insert_wallet(name: str, type_: str, initial_balance: float, is_investment: 
             "initial_balance": initial_balance,
             "is_investment":   is_investment,
             "is_active":       True,
+            "currency":        currency,
         }
         supabase.table('wallets').insert(data).execute()
-        logger.info(f"insert_wallet: {name} ({type_}) saldo awal Rp {initial_balance:,.0f}.")
+        logger.info(f"insert_wallet: {name} ({type_}, {currency}) saldo awal {initial_balance:,.2f}.")
     except Exception as e:
         logger.error(f"insert_wallet gagal: {e}")
         raise
