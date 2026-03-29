@@ -1,0 +1,19 @@
+# .streamlit/config.toml
+# ============================================================
+# Konfigurasi Streamlit — Arsitek Finansial Pribadi
+# ============================================================
+# base = "light" → Streamlit pakai light theme sebagai fondasi,
+# tapi media query prefers-color-scheme di CSS kita akan
+# override komponen kustom ke dark saat OS user dalam dark mode.
+#
+# Jika ingin paksa dark mode untuk semua user:
+#   base = "dark"
+# ============================================================
+
+[theme]
+base = "light"
+primaryColor    = "#2d6a4f"
+backgroundColor = "#f8f6f2"
+secondaryBackgroundColor = "#f0fdf4"
+textColor       = "#1a1a2e"
+font            = "sans serif"

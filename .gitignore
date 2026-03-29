@@ -1,6 +1,5 @@
 # 1. Kredensial Streamlit & Rahasia
-.streamlit/
-secrets.toml
+.streamlit/secrets.toml
 
 # 2. Variabel Lingkungan (Environment Variables)
 .env
