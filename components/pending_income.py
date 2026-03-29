@@ -1,6 +1,8 @@
 import streamlit as st
 import datetime
 from utils.db import insert_pending_income, mark_income_as_paid, refresh_data
+from utils.ui import empty_state
+
 
 def render_pending_incomes(pending_data):
     st.subheader("Pending Income Tracker")
@@ -32,12 +34,13 @@ def render_pending_incomes(pending_data):
 
     if not pending_items:
         st.markdown(
-            '<div style="background:#f0fdf4; border-left:4px solid #2d6a4f; padding:24px; border-radius:8px; text-align:center;">'
-            '<div style="font-size:2rem; margin-bottom:8px;">🎉</div>'
-            '<div style="color:#1a1a2e; font-weight:700; font-size:16px; margin-bottom:4px;">Semua piutang sudah cair!</div>'
-            '<div style="color:#6b7280; font-size:14px;">Tidak ada tagihan tertunda. Kerja bagus!</div>'
-            '</div>',
-            unsafe_allow_html=True
+            empty_state(
+                icon="🎉",
+                title="Semua piutang sudah cair!",
+                body="Tidak ada tagihan tertunda. Kerja bagus!",
+                variant="success",
+            ),
+            unsafe_allow_html=True,
         )
         return
 

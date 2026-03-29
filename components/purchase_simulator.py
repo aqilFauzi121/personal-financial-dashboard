@@ -1,5 +1,6 @@
 import streamlit as st
 from utils.calculations import calculate_runway
+from utils.ui import section_gap
 
 def render_purchase_simulator(transactions_data, envelopes_data):
     st.subheader("Purchase Simulator")
@@ -8,7 +9,7 @@ def render_purchase_simulator(transactions_data, envelopes_data):
     
     with st.container(border=True):
         st.markdown("**Simulasikan Pembelian Barang Non-Esensial**")
-        st.caption("Mekanisme mitigasi FOMO. Cek dampaknya sebelum melakukan pembayaran.")
+        st.caption("Cek dampaknya ke runway dan amplop sebelum melakukan pembayaran.")
         
         with st.form("purchase_sim_form", clear_on_submit=False):
             col1, col2 = st.columns(2)
@@ -20,8 +21,8 @@ def render_purchase_simulator(transactions_data, envelopes_data):
             sim_submit = st.form_submit_button("Cek Dampak Pembelian", use_container_width=True)
             
         if sim_submit and item_name and item_price > 0:
-            st.markdown("---")
-            st.markdown(f"#### Dampak Membeli **{item_name}**")
+            st.markdown(section_gap(), unsafe_allow_html=True)
+            st.subheader(f"Dampak Membeli {item_name}")
             
             # Hitung saldo baru
             new_balance = current_balance - item_price

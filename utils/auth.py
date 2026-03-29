@@ -1,6 +1,7 @@
 import bcrypt
 import streamlit as st
 from datetime import datetime, timedelta
+from utils.ui import login_card
 
 MAX_ATTEMPTS = 5
 LOCKOUT_MINUTES = 5
@@ -22,20 +23,12 @@ def check_password():
 
     # ── UI Card ──────────────────────────────────────────
     st.markdown(
-        '<div style="max-width:480px; margin:60px auto 0 auto;">'
-        '<div style="background:#ffffff; border:1px solid #e5e1d8; border-radius:16px; '
-        'padding:40px; box-shadow:0 4px 16px rgba(0,0,0,0.08); text-align:center;">'
-        '<div style="font-size:4rem; margin-bottom:8px;">💼</div>'
-        '<h1 style="margin:0; font-size:24px; font-weight:800; color:#1a1a2e; letter-spacing:-0.03em;">'
-        'Arsitek Finansial Pribadi</h1>'
-        '<p style="color:#6b7280; font-size:14px; margin:8px 0 24px 0; font-weight:400;">'
-        'Kelola arus kas freelancer — lebih tenang, lebih terarah.</p>'
-        '<hr style="border:none; border-top:1px solid #e5e1d8; margin:0 0 24px 0;">'
-        '<p style="color:#6b7280; font-size:14px; margin-bottom:16px;">'
-        'Silakan masukkan PIN untuk mengakses dasbor keuangan Anda.</p>'
-        '</div>'
-        '</div>',
-        unsafe_allow_html=True
+        login_card(
+            title="Arsitek Finansial Pribadi",
+            subtitle="Kelola arus kas freelancer — lebih tenang, lebih terarah.",
+            prompt="Silakan masukkan PIN untuk mengakses dasbor keuangan Anda.",
+        ),
+        unsafe_allow_html=True,
     )
 
     col1, col2, col3 = st.columns([1, 2, 1])
