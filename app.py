@@ -39,6 +39,7 @@ from components.purchase_simulator import render_purchase_simulator
 from components.spending_chart import render_spending_chart
 from components.wallet_overview import render_wallet_overview
 from components.transaction_history import render_transaction_history
+from components.paypal_transactions import render_paypal_transactions
 
 # ==========================================
 # PULL DATA DARI SUPABASE (dengan session_state caching)
@@ -90,6 +91,13 @@ st.markdown(section_gap(), unsafe_allow_html=True)
 # WALLET OVERVIEW
 # ==========================================
 render_wallet_overview(transactions, wallets)
+
+st.markdown(section_gap(), unsafe_allow_html=True)
+
+# ==========================================
+# TRANSAKSI PAYPAL & ADOBE STOCK
+# ==========================================
+render_paypal_transactions(wallets)
 
 st.markdown(section_gap(), unsafe_allow_html=True)
 

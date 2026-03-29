@@ -7,15 +7,13 @@ from utils.db import (
 from utils.tokens import COLOR, FONT, SPACE, RADIUS, BORDER
 from utils.ui import empty_state
 
-# ── Ikon dan label per tipe wallet ───────────────────────────
 WALLET_TYPE_META = {
-    "cash":       {"label": "Cash / Tunai",          "icon": "💵"},
-    "bank":       {"label": "Bank",                  "icon": "🏦"},
-    "ewallet":    {"label": "E-Wallet",              "icon": "📱"},
-    "investment": {"label": "Investasi",             "icon": "📈"},
+    "cash":       {"label": "Cash / Tunai", "icon": "💵"},
+    "bank":       {"label": "Bank",         "icon": "🏦"},
+    "ewallet":    {"label": "E-Wallet",     "icon": "📱"},
+    "investment": {"label": "Investasi",    "icon": "📈"},
 }
 
-# ── Palet warna per tipe wallet ───────────────────────────────
 WALLET_COLORS = {
     "cash":       {"bg": "#f0fdf4", "bar": "#2d6a4f", "text": "#1a2e1a"},
     "bank":       {"bg": "#EFF6FF", "bar": "#3B82F6", "text": "#1E3A5F"},
@@ -24,15 +22,46 @@ WALLET_COLORS = {
 }
 
 
-def _wallet_card(name: str, wallet_type: str, balance: float, wallet_id: str) -> str:
-    """HTML card untuk satu wallet."""
+def _wallet_card(
+    name: str,
+    wallet_type: str,
+    balance_idr: float,
+    wallet_id: str,
+    currency: str = "IDR",
+    balance_usd: float | None = None,
+    idr_rate: float | None = None,
+) -> str:
+    """
+    HTML card untuk satu wallet.
+    Jika currency='USD', tampilkan dua baris: saldo USD + estimasi IDR.
+    """
     meta   = WALLET_TYPE_META.get(wallet_type, {"label": wallet_type, "icon": "💼"})
     colors = WALLET_COLORS.get(wallet_type, WALLET_COLORS["cash"])
-    c = COLOR
-    f = FONT
-    r = RADIUS
+    c  = COLOR
+    f  = FONT
+    r  = RADIUS
     bw = BORDER["accent_width"]
-    balance_color = c["danger_text"] if balance < 0 else colors["text"]
+
+    is_usd = (currency == "USD")
+    balance_color = c["danger_text"] if balance_idr < 0 else colors["text"]
+
+    if is_usd and balance_usd is not None:
+        primary_amount = (
+            f'<div style="text-align:right;">'
+            f'<span style="color:{balance_color}; font-weight:{f["weight_black"]}; font-size:{f["size_lg"]};">'
+            f'$ {balance_usd:,.2f}</span>'
+            f'<div style="color:{c["text_secondary"]}; font-size:{f["size_sm"]}; margin-top:2px;">'
+            f'≈ Rp {balance_idr:,.0f}'
+            f'{(" @ " + f"{idr_rate:,.0f}") if idr_rate else ""}'
+            f'</div>'
+            f'</div>'
+        )
+    else:
+        primary_amount = (
+            f'<span style="color:{balance_color}; font-weight:{f["weight_black"]}; font-size:{f["size_lg"]};">'
+            f'Rp {balance_idr:,.0f}'
+            f'</span>'
+        )
 
     return (
         f'<div style="'
@@ -42,7 +71,6 @@ def _wallet_card(name: str, wallet_type: str, balance: float, wallet_id: str) ->
         f'border-top-left-radius:0; border-bottom-left-radius:0; '
         f'padding:{SPACE["md"]} {SPACE["xl"]}; '
         f'margin-bottom:{SPACE["sm"]};">'
-
         f'<div style="display:flex; justify-content:space-between; align-items:center;">'
         f'<div>'
         f'<span style="font-size:1.2rem;">{meta["icon"]}</span> '
@@ -51,11 +79,10 @@ def _wallet_card(name: str, wallet_type: str, balance: float, wallet_id: str) ->
         f'</span>'
         f'<div style="color:{c["text_secondary"]}; font-size:{f["size_sm"]}; margin-top:2px;">'
         f'{meta["label"]}'
+        f'{" · USD" if is_usd else ""}'
         f'</div>'
         f'</div>'
-        f'<span style="color:{balance_color}; font-weight:{f["weight_black"]}; font-size:{f["size_lg"]};">'
-        f'Rp {balance:,.0f}'
-        f'</span>'
+        f'{primary_amount}'
         f'</div>'
         f'</div>'
     )
@@ -68,7 +95,15 @@ def render_wallet_overview(transactions_data: list, wallets_data: list) -> None:
     """
     st.subheader("Wallet & Rekening")
 
-    # ── Empty state jika belum ada wallet ────────────────────
+    # Ambil kurs untuk konversi USD wallet
+    idr_rate = None
+    try:
+        from utils.fx import get_usd_to_idr
+        fx = get_usd_to_idr()
+        idr_rate = fx["rate"]
+    except Exception:
+        idr_rate = 16200.0
+
     if not wallets_data:
         st.markdown(
             empty_state(
@@ -80,25 +115,46 @@ def render_wallet_overview(transactions_data: list, wallets_data: list) -> None:
             unsafe_allow_html=True,
         )
     else:
-        # ── Hitung dan tampilkan saldo per wallet ─────────────
         total_operational = 0.0
         total_investment   = 0.0
 
         for wallet in wallets_data:
-            balance = calculate_wallet_balance(
+            currency = wallet.get('currency', 'IDR')
+            balance_idr = calculate_wallet_balance(
                 wallet['id'], transactions_data, float(wallet.get('initial_balance', 0))
             )
-            if wallet.get('is_investment'):
-                total_investment += balance
+
+            # Untuk wallet USD, hitung saldo USD asli
+            if currency == 'USD' and idr_rate:
+                balance_usd = balance_idr / idr_rate
+                st.markdown(
+                    _wallet_card(
+                        name=wallet['name'],
+                        wallet_type=wallet['type'],
+                        balance_idr=balance_idr,
+                        wallet_id=wallet['id'],
+                        currency='USD',
+                        balance_usd=balance_usd,
+                        idr_rate=idr_rate,
+                    ),
+                    unsafe_allow_html=True,
+                )
             else:
-                total_operational += balance
+                st.markdown(
+                    _wallet_card(
+                        name=wallet['name'],
+                        wallet_type=wallet['type'],
+                        balance_idr=balance_idr,
+                        wallet_id=wallet['id'],
+                    ),
+                    unsafe_allow_html=True,
+                )
 
-            st.markdown(
-                _wallet_card(wallet['name'], wallet['type'], balance, wallet['id']),
-                unsafe_allow_html=True,
-            )
+            if wallet.get('is_investment'):
+                total_investment += balance_idr
+            else:
+                total_operational += balance_idr
 
-        # ── Summary total ──────────────────────────────────────
         with st.container(border=True):
             col1, col2 = st.columns(2)
             col1.metric(
